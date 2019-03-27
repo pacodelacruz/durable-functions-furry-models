@@ -1,0 +1,30 @@
+{
+  "version": "2.0",
+  "functionTimeout": "00:05:00",
+  "extensions": {
+    "http": {
+      "routePrefix": ""
+    },
+    "sendGrid": {
+      "from": "Furry Models Workflow <workflows@furrymodels.com.au>"
+    },
+    "serviceBus": {},
+    "durableTask": {
+      "hubName": "FurryModelsHubV1"
+    }
+  },
+  "logging": {
+    "fileLoggingMode": "debugOnly",
+    "logLevel": {
+      "default": "Information",
+      "System": "Warning",
+      "Microsoft": "Warning"
+    },
+    "applicationInsights": {
+      "samplingSettings": {
+        "isEnabled": true,
+        "maxTelemetryItemsPerSecond": 20
+      }
+    }
+  }
+}

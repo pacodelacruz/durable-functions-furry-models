@@ -1,0 +1,7 @@
+﻿https://github.com/Azure/azure-webjobs-sdk/issues/1633
+https://github.com/Azure/Azure-Functions/issues/625#issuecomment-355453557
+https://github.com/Azure/azure-webjobs-sdk/issues/1492
+
+
+D:\Repos\PacodelaCruz.DurableFunctions\src\PacodelaCruz.DurableFunctions.Standard\bin\Debug\netstandard2.0\bin
+func host start --debug vs
