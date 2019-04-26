@@ -15,6 +15,8 @@ namespace PacodelaCruz.DurableFunctions.Approval
 {
     public static class SendApprovalRequestViaSlack
     {
+        private static HttpClient httpClient = new HttpClient();
+
         /// <summary>
         /// Activity Function. 
         /// Sends an Approval Request to a Slack App using an interactive button template. 
@@ -32,17 +34,16 @@ namespace PacodelaCruz.DurableFunctions.Approval
             Uri uri = new Uri(requestMetadata.ReferenceUrl);
             string approvalMessage = string.Format(approvalMessageTemplate, requestMetadata.ReferenceUrl, requestMetadata.ApprovalType, requestMetadata.InstanceId, requestMetadata.ApplicantId, requestMetadata.ApplicationName);
             string resultContent;
-            using (var client = new HttpClient())
+
+            httpClient.BaseAddress = new Uri(approvalRequestUrl);
+            var content = new StringContent(approvalMessage, UnicodeEncoding.UTF8, "application/json");
+            var result = await httpClient.PostAsync(approvalRequestUrl, content);
+            resultContent = await result.Content.ReadAsStringAsync();
+            if (result.StatusCode != HttpStatusCode.OK)
             {
-                client.BaseAddress = new Uri(approvalRequestUrl);
-                var content = new StringContent(approvalMessage, UnicodeEncoding.UTF8, "application/json");
-                var result = await client.PostAsync(approvalRequestUrl, content);
-                resultContent = await result.Content.ReadAsStringAsync();
-                if (result.StatusCode != HttpStatusCode.OK)
-                {
-                    throw new HttpRequestException(resultContent);
-                }
+                throw new HttpRequestException(resultContent);
             }
+
             log.LogInformation($"Message regarding {requestMetadata.ApplicationName} sent to Slack!");
             return resultContent;
         }
